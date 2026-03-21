@@ -3,6 +3,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+def _env(key: str, default: str = "") -> str:
+    """Get env var with whitespace stripped (prevents \\r\\n issues from Windows-created secrets)."""
+    return os.getenv(key, default).strip()
+
 class Settings:
     PROJECT_NAME: str = "DeepDiagram"
     API_V1_STR: str = "/api/v1"
@@ -16,26 +20,26 @@ class Settings:
         "https://diagram.binchat.top",     # 如果有自定义域名
     ]
     
-    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
-    OPENAI_BASE_URL: str = os.getenv("OPENAI_BASE_URL", "https://api.openai.com")
+    OPENAI_API_KEY: str = _env("OPENAI_API_KEY")
+    OPENAI_BASE_URL: str = _env("OPENAI_BASE_URL", "https://api.openai.com")
     
     # LangSmith / LangChain Tracing (Optional but good for agents)
-    LANGCHAIN_TRACING_V2: str = os.getenv("LANGCHAIN_TRACING_V2", "false")
-    LANGCHAIN_API_KEY: str = os.getenv("LANGCHAIN_API_KEY", "")
+    LANGCHAIN_TRACING_V2: str = _env("LANGCHAIN_TRACING_V2", "false")
+    LANGCHAIN_API_KEY: str = _env("LANGCHAIN_API_KEY")
     
     # DATABASE
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5432/deepdiagram")
+    DATABASE_URL: str = _env("DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5432/deepdiagram")
 
-    MAX_TOKENS: int = int(os.getenv("MAX_TOKENS", 1024*16))
+    MAX_TOKENS: int = int(_env("MAX_TOKENS", str(1024*16)))
 
     # DeepSeek
-    DEEPSEEK_API_KEY: str = os.getenv("DEEPSEEK_API_KEY", "")
-    DEEPSEEK_BASE_URL: str = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com")
+    DEEPSEEK_API_KEY: str = _env("DEEPSEEK_API_KEY")
+    DEEPSEEK_BASE_URL: str = _env("DEEPSEEK_BASE_URL", "https://api.deepseek.com")
     
     # Model Selection
-    MODEL_ID: str = os.getenv("MODEL_ID", "")
+    MODEL_ID: str = _env("MODEL_ID")
     
     # Thinking Control
-    THINKING_VERBOSITY: str = os.getenv("THINKING_VERBOSITY", "normal") # normal, concise, verbose
+    THINKING_VERBOSITY: str = _env("THINKING_VERBOSITY", "normal") # normal, concise, verbose
 
 settings = Settings()
