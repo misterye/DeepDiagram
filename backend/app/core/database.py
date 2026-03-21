@@ -6,7 +6,7 @@ from app.core.config import settings
 import ssl as ssl_module
 
 # Strip sslmode/ssl from URL if present (handled via connect_args instead)
-db_url = settings.DATABASE_URL
+db_url = settings.DATABASE_URL.strip()
 for param in ["?sslmode=require", "&sslmode=require", "?ssl=require", "&ssl=require"]:
     db_url = db_url.replace(param, "")
 
