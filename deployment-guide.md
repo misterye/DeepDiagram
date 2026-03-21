@@ -35,7 +35,7 @@
 2. 点击 **New Project**
 3. 填写：
    - **Project name**: `deepdiagram`
-   - **Region**: 选择离 Cloud Run 最近的区域（推荐 `asia-southeast1` 对应 Singapore）
+   - **Region**: 选择离 Cloud Run 最近的区域（推荐 `us-west1` 对应 Oregon）
    - **Database name**: `deepdiagram`
 4. 创建完成后，在 **Dashboard > Connection Details** 中获取连接字符串
 
@@ -86,7 +86,7 @@ postgresql+asyncpg://username:password@ep-xxx-xxx-123456.us-east-2.aws.neon.tech
 ```bash
 gcloud artifacts repositories create deepdiagram \
   --repository-format=docker \
-  --location=asia-southeast1 \
+  --location=us-west1 \
   --description="DeepDiagram Docker images"
 ```
 
@@ -128,22 +128,22 @@ BACKEND_CORS_ORIGINS: list[str] = [
 
 ```bash
 # 配置 Docker 认证
-gcloud auth configure-docker asia-southeast1-docker.pkg.dev
+gcloud auth configure-docker us-west1-docker.pkg.dev
 
 # 构建并推送（在项目根目录执行）
 gcloud builds submit ./backend \
-  --tag asia-southeast1-docker.pkg.dev/YOUR_PROJECT_ID/deepdiagram/backend:latest
+  --tag us-west1-docker.pkg.dev/YOUR_PROJECT_ID/deepdiagram/backend:latest
 ```
 
-> 将 `YOUR_PROJECT_ID` 替换为你的 Google Cloud 项目 ID，`asia-southeast1` 替换为你选择的区域。
+> 将 `YOUR_PROJECT_ID` 替换为你的 Google Cloud 项目 ID，`us-west1` 替换为你选择的区域。
 
 ### 2.5 部署到 Cloud Run
 
 ```bash
 gcloud run deploy deepdiagram-backend \
-  --image asia-southeast1-docker.pkg.dev/YOUR_PROJECT_ID/deepdiagram/backend:latest \
+  --image us-west1-docker.pkg.dev/YOUR_PROJECT_ID/deepdiagram/backend:latest \
   --platform managed \
-  --region asia-southeast1 \
+  --region us-west1 \
   --allow-unauthenticated \
   --port 8000 \
   --memory 1Gi \
@@ -440,8 +440,8 @@ wrangler pages deploy dist --project-name deepdiagram
         uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: deepdiagram-backend
-          region: asia-southeast1
-          image: asia-southeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/deepdiagram/backend:latest
+          region: us-west1
+          image: us-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/deepdiagram/backend:latest
 ```
 
 需要在 GitHub 仓库的 **Settings > Secrets** 中添加：
