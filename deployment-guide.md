@@ -50,12 +50,12 @@ postgresql://username:password@ep-xxx-xxx-123456.us-east-2.aws.neon.tech/deepdia
 **转换为 asyncpg 驱动格式**（后端使用 SQLAlchemy + asyncpg）：
 
 ```
-postgresql+asyncpg://username:password@ep-xxx-xxx-123456.us-east-2.aws.neon.tech/deepdiagram?ssl=require
+postgresql+asyncpg://username:password@ep-xxx-xxx-123456.us-east-2.aws.neon.tech/deepdiagram?sslmode=require
 ```
 
 > [!IMPORTANT]
 > - 将 `postgresql://` 替换为 `postgresql+asyncpg://`
-> - 将 `sslmode=require` 替换为 `ssl=require`
+> - `sslmode=require` 保持不变（asyncpg 直接支持此参数）
 > - 请妥善保管此字符串，后续在 Cloud Run 中使用
 
 ### 1.3 Neon 控制台可选设置
@@ -137,7 +137,77 @@ gcloud builds submit ./backend \
 
 > 将 `YOUR_PROJECT_ID` 替换为你的 Google Cloud 项目 ID，`us-west1` 替换为你选择的区域。
 
-### 2.5 部署到 Cloud Run
+### 2.5 部署到 Cloud Run（生产环境）
+
+#### 2.5.1 启用 Secret Manager 并创建 Secrets
+
+生产环境中，敏感信息（API Key、数据库连接字符串等）应存储在 **Google Secret Manager** 中，而非直接写在环境变量里。
+
+```bash
+# 启用 Secret Manager API
+gcloud services enable secretmanager.googleapis.com
+
+# 创建各项 Secret（将示例值替换为你的真实值）
+echo -n "postgresql+asyncpg://user:pass@ep-xxx.neon.tech/deepdiagram?sslmode=require" | \
+  gcloud secrets create database-url --data-file=-
+
+# Gemini API（默认 LLM 提供商）
+echo -n "your-gemini-api-key" | \
+  gcloud secrets create openai-api-key --data-file=-
+
+echo -n "https://generativelanguage.googleapis.com/v1beta/openai" | \
+  gcloud secrets create openai-base-url --data-file=-
+
+echo -n "gemini-2.0-flash" | \
+  gcloud secrets create model-id --data-file=-
+```
+
+> [!NOTE]
+> Gemini API 兼容 OpenAI 接口协议，因此复用 `openai-api-key` / `openai-base-url` 这两个变量名即可。
+> API Key 可在 [Google AI Studio](https://aistudio.google.com/apikey) 获取。
+> 可用模型：`gemini-2.0-flash`、`gemini-2.5-pro-preview-05-06` 等。
+
+如果需要使用其他 LLM 提供商（OpenAI / DeepSeek），可替换上方的值，或额外创建 DeepSeek 专用 Secret：
+
+```bash
+# OpenAI：将 openai-api-key 的值改为 OpenAI Key，openai-base-url 改为 https://api.openai.com
+
+# DeepSeek（可选，设置后优先于 OpenAI/Gemini）
+echo -n "sk-your-deepseek-key" | \
+  gcloud secrets create deepseek-api-key --data-file=-
+
+echo -n "https://api.deepseek.com" | \
+  gcloud secrets create deepseek-base-url --data-file=-
+```
+
+#### 2.5.2 授予 Cloud Run 访问 Secret 的权限
+
+```bash
+# 获取 Cloud Run 默认服务账号（格式：PROJECT_NUMBER-compute@developer.gserviceaccount.com）
+PROJECT_NUMBER=$(gcloud projects describe YOUR_PROJECT_ID --format='value(projectNumber)')
+
+# 为该服务账号授予 Secret 访问权限
+gcloud secrets add-iam-policy-binding database-url \
+  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+  --role="roles/secretmanager.secretAccessor"
+
+gcloud secrets add-iam-policy-binding openai-api-key \
+  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+  --role="roles/secretmanager.secretAccessor"
+
+gcloud secrets add-iam-policy-binding openai-base-url \
+  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+  --role="roles/secretmanager.secretAccessor"
+
+gcloud secrets add-iam-policy-binding model-id \
+  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+  --role="roles/secretmanager.secretAccessor"
+```
+
+> [!TIP]
+> 如果创建了 DeepSeek 的 Secret，也需要对 `deepseek-api-key` 和 `deepseek-base-url` 执行相同的授权命令。
+
+#### 2.5.3 部署服务
 
 ```bash
 gcloud run deploy deepdiagram-backend \
@@ -152,27 +222,25 @@ gcloud run deploy deepdiagram-backend \
   --min-instances 0 \
   --max-instances 10 \
   --concurrency 80 \
+  --set-secrets "\
+DATABASE_URL=database-url:latest,\
+OPENAI_API_KEY=openai-api-key:latest,\
+OPENAI_BASE_URL=openai-base-url:latest,\
+MODEL_ID=model-id:latest" \
   --set-env-vars "\
-DATABASE_URL=postgresql+asyncpg://user:pass@ep-xxx.neon.tech/deepdiagram?ssl=require,\
-OPENAI_API_KEY=sk-your-key,\
-OPENAI_BASE_URL=https://api.openai.com,\
-MODEL_ID=claude-sonnet-3.7,\
 LANGCHAIN_TRACING_V2=false,\
 THINKING_VERBOSITY=concise,\
 MAX_TOKENS=16384"
 ```
 
-> [!WARNING]
-> 上述命令将敏感信息（API Key）直接放在环境变量中。生产环境强烈建议使用 **Google Secret Manager**：
-> ```bash
-> # 创建 Secret
-> echo -n "sk-your-key" | gcloud secrets create openai-api-key --data-file=-
->
-> # 部署时引用 Secret
-> gcloud run deploy deepdiagram-backend \
->   ... \
->   --set-secrets "OPENAI_API_KEY=openai-api-key:latest"
-> ```
+> [!NOTE]
+> - `--set-secrets` 用于引用 Secret Manager 中的敏感值，Cloud Run 会在运行时自动注入为环境变量
+> - `--set-env-vars` 用于非敏感的普通配置
+> - 如果需要更新某个 Secret 的值，使用：
+>   ```bash
+>   echo -n "new-value" | gcloud secrets versions add SECRET_NAME --data-file=-
+>   ```
+>   然后重新部署服务即可生效
 
 ### 2.6 环境变量清单
 
