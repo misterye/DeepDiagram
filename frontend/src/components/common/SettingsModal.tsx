@@ -3,6 +3,7 @@ import { X, Save, Shield, Info, Plus, Trash2, Edit2, Loader2, CheckCircle, Alert
 import { useSettingsStore } from '../../store/settingsStore';
 import type { ModelConfig } from '../../store/settingsStore';
 import { cn } from '../../lib/utils';
+import { API_BASE_URL } from '../../lib/api';
 
 interface SettingsModalProps {
     isOpen: boolean;
@@ -36,7 +37,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
         setTestResult(null);
 
         try {
-            const response = await fetch('/api/test-model', {
+            const response = await fetch(`${API_BASE_URL}/api/test-model`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

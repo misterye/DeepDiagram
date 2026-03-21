@@ -7,7 +7,14 @@ class Settings:
     PROJECT_NAME: str = "DeepDiagram"
     API_V1_STR: str = "/api/v1"
     # CORS
-    BACKEND_CORS_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000", "*"]
+    # BACKEND_CORS_ORIGINS: list[str] = ["http://localhost:5173", "http://localhost:3000", "*"]
+    # 改为（替换 your-project 为你的 Cloudflare Pages 项目名，或保留 * 允许所有来源）：
+    BACKEND_CORS_ORIGINS: list[str] = [
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "https://deepdiagram.pages.dev",     # Cloudflare Pages 默认域名
+        "https://diagram.binchat.top",     # 如果有自定义域名
+    ]
     
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
     OPENAI_BASE_URL: str = os.getenv("OPENAI_BASE_URL", "https://api.openai.com")

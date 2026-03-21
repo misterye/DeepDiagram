@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { ChatState, Message, AgentType, Step, DocAnalysisBlock } from '../types';
 import { setCanvasState, getCanvasState } from './canvasState';
+import { API_BASE_URL } from '../lib/api';
 
 export const useChatStore = create<ChatState>((set, get) => ({
     messages: [],
@@ -411,7 +412,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
     loadSessions: async () => {
         try {
-            const response = await fetch('/api/sessions');
+            const response = await fetch(`${API_BASE_URL}/api/sessions`);
             if (response.ok) {
                 const data = await response.json();
                 set({ sessions: data });
@@ -424,7 +425,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     selectSession: async (sessionId: number) => {
         set({ isLoading: true, sessionId, messages: [], allMessages: [], selectedVersions: {} });
         try {
-            const response = await fetch(`/api/sessions/${sessionId}`);
+            const response = await fetch(`${API_BASE_URL}/api/sessions/${sessionId}`);
             if (response.ok) {
                 const data = await response.json();
                 const history = data.messages || [];
@@ -545,7 +546,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
     deleteSession: async (sessionId: number) => {
         try {
-            const response = await fetch(`/api/sessions/${sessionId}`, { method: 'DELETE' });
+            const response = await fetch(`${API_BASE_URL}/api/sessions/${sessionId}`, { method: 'DELETE' });
             if (response.ok) {
                 const { sessions, sessionId: currentId } = get();
                 set({ sessions: sessions.filter(s => s.id !== sessionId) });

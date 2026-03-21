@@ -1,9 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-// Tailwind v4 is handled via postcss plugin in this project.
 
 export default defineConfig({
-  base: '/app',
+  base: '/',   // 原来是 '/app'，改为根路径
   plugins: [react()],
   server: {
     proxy: {
