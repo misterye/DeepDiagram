@@ -1,28 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 
 const REQUIRED_PASSWORD = import.meta.env.VITE_PASSWORD || '';
 const AUTH_KEY = 'deepdiagram_authenticated';
 
+// Compute initial auth state synchronously to prevent flash
+function getInitialAuth(): boolean {
+    if (!REQUIRED_PASSWORD) return true;
+    try {
+        return sessionStorage.getItem(AUTH_KEY) === 'true';
+    } catch {
+        return false;
+    }
+}
+
 export const PasswordGate: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [authenticated, setAuthenticated] = useState(false);
+    const [authenticated, setAuthenticated] = useState(getInitialAuth);
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const [shaking, setShaking] = useState(false);
-
-    // If no password is configured, skip the gate entirely
-    useEffect(() => {
-        if (!REQUIRED_PASSWORD) {
-            setAuthenticated(true);
-            return;
-        }
-        // Check if already authenticated in this session
-        const stored = sessionStorage.getItem(AUTH_KEY);
-        if (stored === 'true') {
-            setAuthenticated(true);
-        }
-    }, []);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
