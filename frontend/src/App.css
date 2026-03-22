@@ -11,6 +11,16 @@ html,
   /* slate-50 */
 }
 
+.dark body,
+.dark html,
+.dark #root,
+html.dark,
+html.dark body,
+html.dark #root {
+  background-color: #0f172a;
+  /* slate-900 */
+}
+
 #root {
   display: block;
 }

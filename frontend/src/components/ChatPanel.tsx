@@ -4,8 +4,9 @@ import {
     Code2, BarChart3, PenTool, Brain, Send, Paperclip, X, FileText,
     Settings, Command, Square, Copy, Check, RotateCcw, Zap, Github,
     Plus, History as HistoryIcon, MessageSquare, Trash2, AlertCircle,
-    ChevronRight, ChevronLeft
+    ChevronRight, ChevronLeft, Moon, Sun
 } from 'lucide-react';
+import { useThemeStore } from '../store/themeStore';
 import { useSettingsStore } from '../store/settingsStore';
 import { SettingsModal } from './common/SettingsModal';
 import { useChatStore } from '../store/chatStore';
@@ -956,31 +957,40 @@ export const ChatPanel = () => {
         void triggerSubmit();
     };
 
+    const { theme, toggleTheme } = useThemeStore();
+
     return (
-        <div className="flex flex-col h-full bg-slate-50 overflow-hidden">
-            <div className="p-4 border-b border-slate-200 bg-white/80 backdrop-blur-md sticky top-0 z-10 flex items-center justify-between">
+        <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden">
+            <div className="p-4 border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-10 flex items-center justify-between">
                 <div>
                     <div className="flex items-center gap-2">
                         <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                            DeepDiagram AI
+                            Diagram AI
                         </h1>
                         <a
                             href="https://github.com/twwch/DeepDiagram"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-1 rounded-full hover:bg-slate-100 text-slate-950 transition-colors"
+                            className="p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-950 dark:text-slate-200 transition-colors"
                             title="View on GitHub"
                         >
                             <Github className="w-5 h-5 fill-current" />
                         </a>
                     </div>
-                    <p className="text-xs text-slate-500 mt-1">Describe what you want to create or upload an image.</p>
                 </div>
 
                 <div className="flex items-center gap-2">
                     <button
+                        onClick={toggleTheme}
+                        className="p-2.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-all hover:text-blue-600 dark:hover:text-blue-400 shadow-sm"
+                        title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                    >
+                        {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                    </button>
+
+                    <button
                         onClick={() => setIsSettingsOpen(true)}
-                        className="p-2.5 bg-slate-100 text-slate-500 rounded-full hover:bg-slate-200 transition-all hover:text-blue-600 shadow-sm"
+                        className="p-2.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-all hover:text-blue-600 dark:hover:text-blue-400 shadow-sm"
                         title="Model Settings"
                     >
                         <Settings className="w-5 h-5" />
@@ -1004,8 +1014,8 @@ export const ChatPanel = () => {
                             className={cn(
                                 "flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium transition-all",
                                 showHistory
-                                    ? "bg-slate-100 border-slate-300 text-slate-800"
-                                    : "bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+                                    ? "bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200"
+                                    : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700"
                             )}
                         >
                             <HistoryIcon className="w-3.5 h-3.5" />
@@ -1014,10 +1024,10 @@ export const ChatPanel = () => {
                         </button>
 
                         {showHistory && (
-                            <div className="absolute right-0 mt-2 w-80 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200/50 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                                <div className="p-3 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                            <div className="absolute right-0 mt-2 w-80 bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200/50 dark:border-slate-700/50 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                                <div className="p-3 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
                                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">Recent Chats</span>
-                                    <HistoryIcon className="w-3 h-3 text-slate-300" />
+                                    <HistoryIcon className="w-3 h-3 text-slate-300 dark:text-slate-500" />
                                 </div>
                                 <div className="max-h-[400px] overflow-y-auto p-1 custom-scrollbar">
                                     {sessions.length === 0 ? (
@@ -1029,8 +1039,8 @@ export const ChatPanel = () => {
                                             <div
                                                 key={session.id}
                                                 className={cn(
-                                                    "group flex items-center gap-3 p-2.5 rounded-xl hover:bg-blue-50/50 text-left transition-all cursor-pointer",
-                                                    sessionId === session.id ? "bg-blue-50/80 border-blue-100" : "transparent"
+                                                    "group flex items-center gap-3 p-2.5 rounded-xl hover:bg-blue-50/50 dark:hover:bg-blue-900/20 text-left transition-all cursor-pointer",
+                                                    sessionId === session.id ? "bg-blue-50/80 dark:bg-blue-900/30 border-blue-100 dark:border-blue-800" : "transparent"
                                                 )}
                                                 onClick={() => {
                                                     stopGeneration();
@@ -1040,14 +1050,14 @@ export const ChatPanel = () => {
                                             >
                                                 <div className={cn(
                                                     "p-2 rounded-lg transition-colors",
-                                                    sessionId === session.id ? "bg-blue-100/50 text-blue-600" : "bg-slate-100 text-slate-400 group-hover:bg-white group-hover:text-blue-500"
+                                                    sessionId === session.id ? "bg-blue-100/50 text-blue-600" : "bg-slate-100 dark:bg-slate-700 text-slate-400 group-hover:bg-white dark:group-hover:bg-slate-600 group-hover:text-blue-500"
                                                 )}>
                                                     <MessageSquare className="w-4 h-4" />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <div className={cn(
                                                         "text-sm font-semibold truncate",
-                                                        sessionId === session.id ? "text-blue-700" : "text-slate-700 group-hover:text-blue-700"
+                                                        sessionId === session.id ? "text-blue-700" : "text-slate-700 dark:text-slate-200 group-hover:text-blue-700"
                                                     )}>
                                                         {session.title || "New Chat"}
                                                     </div>
@@ -1078,7 +1088,7 @@ export const ChatPanel = () => {
             {/* Global Toast */}
             {toast && (
                 <div className="absolute top-20 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-top-2">
-                    <div className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 border border-red-200 rounded-full shadow-lg text-sm font-medium">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 rounded-full shadow-lg text-sm font-medium">
                         <AlertCircle className="w-4 h-4" />
                         <span>{toast.message}</span>
                     </div>
@@ -1106,15 +1116,15 @@ export const ChatPanel = () => {
                         <div className="flex flex-col items-center space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
                             <div className="relative group">
                                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200" />
-                                <div className="relative p-5 bg-white rounded-2xl shadow-2xl border border-slate-100 flex items-center justify-center">
+                                <div className="relative p-5 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 flex items-center justify-center">
                                     <Send className="w-10 h-10 text-blue-600 animate-bounce" />
                                 </div>
                             </div>
                             <div className="text-center space-y-2">
-                                <h2 className="text-3xl font-black tracking-tight text-slate-800 bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 bg-clip-text">
+                                <h2 className="text-3xl font-black tracking-tight text-slate-800 dark:text-slate-100 bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 dark:from-slate-100 dark:via-slate-300 dark:to-slate-100 bg-clip-text">
                                     Design Your Vision
                                 </h2>
-                                <p className="text-slate-400 font-medium max-w-sm mx-auto leading-relaxed">
+                                <p className="text-slate-400 dark:text-slate-500 font-medium max-w-sm mx-auto leading-relaxed">
                                     Unlock professional diagrams with AI-powered consulting.
                                     Select a showcase below to begin.
                                 </p>
@@ -1148,7 +1158,7 @@ export const ChatPanel = () => {
                                                 void triggerSubmit(agent.demoInput);
                                             }
                                         }}
-                                        className="group relative flex flex-col text-left p-6 bg-white/60 backdrop-blur-xl border border-white/50 rounded-3xl shadow-xl shadow-slate-200/50 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-500 active:scale-[0.98] overflow-hidden min-h-[220px]"
+                                        className="group relative flex flex-col text-left p-6 bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl border border-white/50 dark:border-slate-700/50 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-500 active:scale-[0.98] overflow-hidden min-h-[220px]"
                                     >
                                         <div className="absolute top-0 right-0 p-8 -mr-8 -mt-8 bg-gradient-to-br from-white/10 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
@@ -1160,13 +1170,13 @@ export const ChatPanel = () => {
                                                 <agent.icon className="w-6 h-6" />
                                             </div>
                                             <div className="flex flex-col min-w-0">
-                                                <span className="font-bold text-slate-800 text-lg truncate">{agent.label}</span>
-                                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest truncate">Consultant Agent</span>
+                                                <span className="font-bold text-slate-800 dark:text-slate-100 text-lg truncate">{agent.label}</span>
+                                                <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest truncate">Consultant Agent</span>
                                             </div>
                                         </div>
 
                                         <div className="space-y-3 flex-1">
-                                            <p className="text-xs text-slate-500 group-hover:text-slate-700 leading-relaxed italic border-l-2 border-slate-100 pl-3 transition-colors line-clamp-4">
+                                            <p className="text-xs text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 leading-relaxed italic border-l-2 border-slate-100 dark:border-slate-700 pl-3 transition-colors line-clamp-4">
                                                 "{agent.demoInput?.replace(`@${agent.id} `, '')}"
                                             </p>
                                         </div>
@@ -1174,7 +1184,7 @@ export const ChatPanel = () => {
                                         <div className="mt-6 flex items-center justify-between">
                                             <div className="flex gap-1">
                                                 {[1, 2, 3].map(i => (
-                                                    <div key={i} className="w-1 h-1 rounded-full bg-slate-200 group-hover:bg-blue-300 transition-colors" />
+                                                    <div key={i} className="w-1 h-1 rounded-full bg-slate-200 dark:bg-slate-600 group-hover:bg-blue-300 transition-colors" />
                                                 ))}
                                             </div>
                                             <div className={cn(
@@ -1190,8 +1200,8 @@ export const ChatPanel = () => {
                             })}
                         </div>
 
-                        <div className="text-[10px] font-bold text-slate-300 uppercase tracking-[0.2em] animate-pulse">
-                            Powered by DeepDiagram Advanced Orchestration
+                        <div className="text-[10px] font-bold text-slate-300 dark:text-slate-600 uppercase tracking-[0.2em] animate-pulse">
+                            Powered by Diagram AI
                         </div>
                     </div>
                 )}
@@ -1244,7 +1254,7 @@ export const ChatPanel = () => {
                                     "max-w-[85%] rounded-2xl p-4 shadow-sm relative transition-all duration-300",
                                     msg.role === 'user'
                                         ? "bg-gradient-to-br from-blue-600 to-indigo-700 text-white rounded-tr-none"
-                                        : "bg-white text-slate-800 rounded-tl-none border border-slate-100/50 hover:shadow-md hover:border-blue-100/50"
+                                        : "bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-tl-none border border-slate-100/50 dark:border-slate-700/50 hover:shadow-md hover:border-blue-100/50"
                                 )}
                             >
                                 {msg.docAnalysisBlocks && msg.docAnalysisBlocks.length > 0 && (
@@ -1295,7 +1305,7 @@ export const ChatPanel = () => {
                                                 if (!displayContent) return null;
 
                                                 return (
-                                                    <div key={blockIdx} className="prose prose-slate prose-sm max-w-none prose-p:my-1 prose-headings:text-slate-800 prose-headings:font-bold prose-headings:mb-1 prose-headings:mt-3 first:prose-headings:mt-0">
+                                                    <div key={blockIdx} className="prose prose-slate dark:prose-invert prose-sm max-w-none prose-p:my-1 prose-headings:text-slate-800 dark:prose-headings:text-slate-100 prose-headings:font-bold prose-headings:mb-1 prose-headings:mt-3 first:prose-headings:mt-0">
                                                         <ReactMarkdown
                                                             remarkPlugins={[remarkGfm]}
                                                             components={{
@@ -1388,7 +1398,7 @@ export const ChatPanel = () => {
                                                 "flex items-center gap-2 px-3 py-2 rounded-xl border transition-all",
                                                 msg.role === 'user'
                                                     ? "bg-white/10 border-white/20 text-white"
-                                                    : "bg-slate-50 border-slate-100 text-slate-700 hover:bg-slate-100"
+                                                    : "bg-slate-50 dark:bg-slate-700 border-slate-100 dark:border-slate-600 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600"
                                             )}>
                                                 <FileText className={cn("w-4 h-4", msg.role === 'user' ? "text-blue-200" : "text-blue-500")} />
                                                 <div className="flex flex-col min-w-0">
@@ -1403,8 +1413,8 @@ export const ChatPanel = () => {
                                 )}
 
                                 {versionInfo && (
-                                    <div className="flex items-center gap-2 mt-3 pt-2 border-t border-slate-100/50">
-                                        <div className="flex items-center bg-slate-50 rounded-lg p-0.5 border border-slate-100">
+                                    <div className="flex items-center gap-2 mt-3 pt-2 border-t border-slate-100/50 dark:border-slate-700/50">
+                                        <div className="flex items-center bg-slate-50 dark:bg-slate-700 rounded-lg p-0.5 border border-slate-100 dark:border-slate-600">
                                             <button
                                                 onClick={(e) => switchVersion(e, msg, -1)}
                                                 disabled={isLoading}
@@ -1472,7 +1482,7 @@ export const ChatPanel = () => {
             </div >
 
             {/* Input Area */}
-            < div className="p-4 border-t border-slate-200 bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] relative z-20" >
+            <div className="p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] relative z-20">
                 {/* Image Previews */}
                 {
                     inputImages.length > 0 && (
@@ -1503,8 +1513,8 @@ export const ChatPanel = () => {
                             className={cn(
                                 "relative group flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium transition-all whitespace-nowrap",
                                 input.startsWith('@' + agent.id + ' ')
-                                    ? "bg-blue-50 border-blue-200 text-blue-700 shadow-sm"
-                                    : "bg-white border-slate-200 text-slate-600 hover:border-blue-300 hover:text-blue-600"
+                                    ? "bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-700 text-blue-700 dark:text-blue-400 shadow-sm"
+                                    : "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-blue-300 hover:text-blue-600"
                             )}
                         >
                             <agent.icon className="w-3.5 h-3.5" />
@@ -1563,13 +1573,13 @@ export const ChatPanel = () => {
                         className="hidden"
                     />
 
-                    <div className="relative border border-slate-200 rounded-[28px] bg-slate-50 focus-within:bg-white focus-within:ring-4 focus-within:ring-blue-500/10 focus-within:border-blue-500/50 transition-all shadow-sm">
+                    <div className="relative border border-slate-200 dark:border-slate-700 rounded-[28px] bg-slate-50 dark:bg-slate-800 focus-within:bg-white dark:focus-within:bg-slate-800 focus-within:ring-4 focus-within:ring-blue-500/10 focus-within:border-blue-500/50 transition-all shadow-sm">
                         {/* Agent Mention Menu */}
                         {showMentions && (
-                            <div className="absolute bottom-full mb-2 w-72 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[60] animate-in fade-in slide-in-from-bottom-2 duration-200">
-                                <div className="p-2 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+                            <div className="absolute bottom-full mb-2 w-72 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-700 overflow-hidden z-[60] animate-in fade-in slide-in-from-bottom-2 duration-200">
+                                <div className="p-2 border-b border-slate-50 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
                                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">Select Agent</span>
-                                    <Command className="w-3 h-3 text-slate-300" />
+                                    <Command className="w-3 h-3 text-slate-300 dark:text-slate-500" />
                                 </div>
                                 <div className="max-h-64 overflow-y-auto p-1 custom-scrollbar">
                                     {AGENTS.filter(a => a.label.toLowerCase().includes(mentionFilter.toLowerCase()) || a.id.includes(mentionFilter.toLowerCase())).map((agent) => (
@@ -1627,7 +1637,7 @@ export const ChatPanel = () => {
                             onKeyDown={handleKeyDown}
                             onPaste={handlePaste}
                             placeholder={inputImages.length > 0 ? "Ask about this image..." : "Ask anything... (Type @ to select agent)"}
-                            className="w-full px-5 pt-5 pb-2 bg-transparent focus:outline-none font-medium text-slate-700 placeholder:text-slate-400 resize-none overflow-y-auto custom-scrollbar"
+                            className="w-full px-5 pt-5 pb-2 bg-transparent focus:outline-none font-medium text-slate-700 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none overflow-y-auto custom-scrollbar"
                             style={{ height: 'auto', minHeight: '60px' }}
                             disabled={isLoading}
                         />
@@ -1679,8 +1689,8 @@ export const ChatPanel = () => {
                                     </button>
 
                                     {isModelSelectorOpen && (
-                                        <div className="absolute bottom-full left-0 mb-2 w-48 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50 animate-in slide-in-from-bottom-2 duration-200">
-                                            <div className="p-2 border-b border-slate-50">
+                                        <div className="absolute bottom-full left-0 mb-2 w-48 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 overflow-hidden z-50 animate-in slide-in-from-bottom-2 duration-200">
+                                            <div className="p-2 border-b border-slate-50 dark:border-slate-700">
                                                 <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest px-2">Select Model</span>
                                             </div>
                                             <div className="max-h-60 overflow-y-auto py-1 custom-scrollbar">
@@ -1745,7 +1755,7 @@ export const ChatPanel = () => {
 
                                 {/* Recommendation Popup */}
                                 {showRecommendation && models.length === 0 && (
-                                    <div className="absolute bottom-full left-0 mb-4 w-72 bg-white rounded-2xl shadow-2xl border border-blue-100 p-4 z-50 animate-in slide-in-from-bottom-4 duration-300">
+                                    <div className="absolute bottom-full left-0 mb-4 w-72 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-blue-100 dark:border-slate-700 p-4 z-50 animate-in slide-in-from-bottom-4 duration-300">
                                         <div className="flex items-start gap-3">
                                             <div className="p-2 bg-blue-50 text-blue-600 rounded-xl">
                                                 <Sparkles className="w-4 h-4" />

@@ -57,7 +57,7 @@ export const PasswordGate: React.FC<{ children: React.ReactNode }> = ({ children
                         <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/25">
                             <Lock className="w-8 h-8 text-white" />
                         </div>
-                        <h1 className="text-xl font-bold text-white mb-1">DeepDiagram AI</h1>
+                        <h1 className="text-xl font-bold text-white mb-1">Diagram AI</h1>
                         <p className="text-sm text-slate-400">请输入访问密码</p>
                     </div>
 

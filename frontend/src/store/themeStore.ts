@@ -1,0 +1,33 @@
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+interface ThemeState {
+    theme: 'light' | 'dark';
+    toggleTheme: () => void;
+    initTheme: () => void;
+}
+
+const applyTheme = (theme: 'light' | 'dark') => {
+    if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+};
+
+export const useThemeStore = create<ThemeState>()(
+    persist(
+        (set, get) => ({
+            theme: 'light',
+            toggleTheme: () => {
+                const next = get().theme === 'light' ? 'dark' : 'light';
+                applyTheme(next);
+                set({ theme: next });
+            },
+            initTheme: () => {
+                applyTheme(get().theme);
+            },
+        }),
+        { name: 'diagram-ai-theme' }
+    )
+);

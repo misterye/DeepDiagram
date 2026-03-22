@@ -74,7 +74,7 @@ export const CanvasPanel = () => {
     const useZoomWrapper = activeAgent === 'flowchart' || activeAgent === 'mindmap';
 
     return (
-        <div className="h-full w-full bg-slate-50 relative flex flex-col overflow-hidden">
+        <div className="h-full w-full bg-slate-50 dark:bg-slate-900 relative flex flex-col overflow-hidden">
             {/* Main Content Area */}
             <div className="flex-1 w-full h-full overflow-hidden">
                 <div className="w-full h-full relative">
@@ -87,16 +87,16 @@ export const CanvasPanel = () => {
                                 disabled={isLoading}
                                 className={cn(
                                     "transition-colors duration-200 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed",
-                                    showDownloadMenu ? "text-blue-600" : "text-slate-700 hover:text-blue-600"
+                                    showDownloadMenu ? "text-blue-600" : "text-slate-700 dark:text-slate-300 hover:text-blue-600"
                                 )}
                                 title="Download"
                             >
                                 <Download className="w-5 h-5" />
                             </button>
                             {showDownloadMenu && (
-                                <div className="absolute right-0 top-full mt-2 bg-white/95 backdrop-blur border border-slate-200 shadow-lg rounded-lg p-1 flex flex-col w-32 z-50" onMouseLeave={() => setShowDownloadMenu(false)}>
-                                    <button onClick={() => handleDownload('png')} className="px-3 py-2 text-xs text-left hover:bg-slate-50 text-slate-700 rounded-md block w-full transition-colors">Save PNG</button>
-                                    <button onClick={() => handleDownload('svg')} className="px-3 py-2 text-xs text-left hover:bg-slate-50 text-slate-700 rounded-md block w-full transition-colors">Save SVG</button>
+                                <div className="absolute right-0 top-full mt-2 bg-white/95 dark:bg-slate-800/95 backdrop-blur border border-slate-200 dark:border-slate-700 shadow-lg rounded-lg p-1 flex flex-col w-32 z-50" onMouseLeave={() => setShowDownloadMenu(false)}>
+                                    <button onClick={() => handleDownload('png')} className="px-3 py-2 text-xs text-left hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-md block w-full transition-colors">Save PNG</button>
+                                    <button onClick={() => handleDownload('svg')} className="px-3 py-2 text-xs text-left hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-md block w-full transition-colors">Save SVG</button>
                                 </div>
                             )}
                         </div>
@@ -106,7 +106,7 @@ export const CanvasPanel = () => {
                             <button
                                 onClick={handleResetView}
                                 disabled={isLoading}
-                                className="text-slate-700 hover:text-blue-600 transition-colors duration-200 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                                className="text-slate-700 dark:text-slate-300 hover:text-blue-600 transition-colors duration-200 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                                 title="Reset View"
                             >
                                 <RotateCcw className="w-5 h-5" />
@@ -117,7 +117,7 @@ export const CanvasPanel = () => {
                         <button
                             onClick={handleRegenerate}
                             disabled={isLoading}
-                            className="text-slate-700 hover:text-blue-600 transition-colors duration-200 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                            className="text-slate-700 dark:text-slate-300 hover:text-blue-600 transition-colors duration-200 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                             title="Regenerate Diagram"
                         >
                             <RefreshCw className={cn("w-5 h-5", isLoading && "animate-spin")} />
@@ -179,7 +179,7 @@ export const CanvasPanel = () => {
                         })()}
 
                         {!activeMessageId && !isLoading && (
-                            <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+                            <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 dark:text-slate-500">
                                 <p>No diagram generated yet.</p>
                             </div>
                         )}
