@@ -4,7 +4,7 @@ import {
     Code2, BarChart3, PenTool, Brain, Send, Paperclip, X, FileText,
     Settings, Command, Square, Copy, Check, RotateCcw, Zap, Github,
     Plus, History as HistoryIcon, MessageSquare, Trash2, AlertCircle,
-    ChevronRight, ChevronLeft
+    ChevronRight, ChevronLeft, LogOut
 } from 'lucide-react';
 import { useSettingsStore } from '../store/settingsStore';
 import { SettingsModal } from './common/SettingsModal';
@@ -977,6 +977,17 @@ export const ChatPanel = () => {
                 </div>
 
                 <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => {
+                            sessionStorage.removeItem('deepdiagram_authenticated');
+                            window.location.reload();
+                        }}
+                        className="p-2.5 bg-slate-100 text-slate-500 rounded-full hover:bg-slate-200 hover:text-red-500 transition-all shadow-sm"
+                        title="Logout"
+                    >
+                        <LogOut className="w-5 h-5" />
+                    </button>
+
                     <button
                         onClick={() => setIsSettingsOpen(true)}
                         className="p-2.5 bg-slate-100 text-slate-500 rounded-full hover:bg-slate-200 transition-all hover:text-blue-600 shadow-sm"
