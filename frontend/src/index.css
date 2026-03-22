@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
 html,
 body,
 #root {
@@ -39,33 +37,4 @@ tr:nth-child(even) {
 
 tr:hover {
   background-color: #f1f5f9;
-}
-
-/* Dark mode table styles */
-.dark th {
-  background-color: #1e293b;
-  border-color: #334155;
-  color: #e2e8f0;
-}
-
-.dark td {
-  border-color: #334155;
-  color: #cbd5e1;
-}
-
-.dark tr:nth-child(even) {
-  background-color: #1e293b;
-}
-
-.dark tr:hover {
-  background-color: #1e293b;
-}
-
-/* Custom scrollbar for dark mode */
-.dark .custom-scrollbar::-webkit-scrollbar-track {
-  background: #1e293b;
-}
-
-.dark .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #475569;
 }

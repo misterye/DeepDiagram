@@ -1,15 +1,11 @@
 import './App.css';
-import { useEffect } from 'react';
 import { ChatPanel } from './components/ChatPanel';
 import { CanvasPanel } from './components/CanvasPanel';
 import { PasswordGate } from './components/PasswordGate';
-import { useThemeStore } from './store/themeStore';
 import { ReactFlowProvider } from 'reactflow';
 import { Panel, Group, Separator } from 'react-resizable-panels';
 
 function App() {
-  const initTheme = useThemeStore(s => s.initTheme);
-  useEffect(() => { initTheme(); }, []);
   return (
     <PasswordGate>
       <div className="h-screen w-screen overflow-hidden">

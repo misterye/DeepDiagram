@@ -4,9 +4,8 @@ import {
     Code2, BarChart3, PenTool, Brain, Send, Paperclip, X, FileText,
     Settings, Command, Square, Copy, Check, RotateCcw, Zap, Github,
     Plus, History as HistoryIcon, MessageSquare, Trash2, AlertCircle,
-    ChevronRight, ChevronLeft, Moon, Sun
+    ChevronRight, ChevronLeft
 } from 'lucide-react';
-import { useThemeStore } from '../store/themeStore';
 import { useSettingsStore } from '../store/settingsStore';
 import { SettingsModal } from './common/SettingsModal';
 import { useChatStore } from '../store/chatStore';
@@ -957,11 +956,9 @@ export const ChatPanel = () => {
         void triggerSubmit();
     };
 
-    const { theme, toggleTheme } = useThemeStore();
-
     return (
-        <div className="flex flex-col h-full bg-slate-50 dark:bg-slate-900 overflow-hidden">
-            <div className="p-4 border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-10 flex items-center justify-between">
+        <div className="flex flex-col h-full bg-slate-50 overflow-hidden">
+            <div className="p-4 border-b border-slate-200 bg-white/80 backdrop-blur-md sticky top-0 z-10 flex items-center justify-between">
                 <div>
                     <div className="flex items-center gap-2">
                         <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
@@ -971,7 +968,7 @@ export const ChatPanel = () => {
                             href="https://github.com/twwch/DeepDiagram"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-950 dark:text-slate-200 transition-colors"
+                            className="p-1 rounded-full hover:bg-slate-100 text-slate-950 transition-colors"
                             title="View on GitHub"
                         >
                             <Github className="w-5 h-5 fill-current" />
@@ -981,16 +978,8 @@ export const ChatPanel = () => {
 
                 <div className="flex items-center gap-2">
                     <button
-                        onClick={toggleTheme}
-                        className="p-2.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-all hover:text-blue-600 dark:hover:text-blue-400 shadow-sm"
-                        title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-                    >
-                        {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                    </button>
-
-                    <button
                         onClick={() => setIsSettingsOpen(true)}
-                        className="p-2.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-all hover:text-blue-600 dark:hover:text-blue-400 shadow-sm"
+                        className="p-2.5 bg-slate-100 text-slate-500 rounded-full hover:bg-slate-200 transition-all hover:text-blue-600 shadow-sm"
                         title="Model Settings"
                     >
                         <Settings className="w-5 h-5" />
