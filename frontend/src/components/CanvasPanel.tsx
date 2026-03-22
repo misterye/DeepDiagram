@@ -79,7 +79,7 @@ export const CanvasPanel = () => {
             <div className="flex-1 w-full h-full overflow-hidden">
                 <div className="w-full h-full relative">
                     {/* Toolbar */}
-                    <div className="absolute top-4 right-4 z-10 flex flex-row gap-2 items-center">
+                    <div className="absolute bottom-6 right-6 z-20 flex flex-row gap-1 items-center bg-white/90 backdrop-blur-md shadow-sm border border-slate-200 p-1.5 rounded-xl">
                         {/* Download Button */}
                         <div className="relative">
                             <button
@@ -94,9 +94,9 @@ export const CanvasPanel = () => {
                                 <Download className="w-5 h-5" />
                             </button>
                             {showDownloadMenu && (
-                                <div className="absolute right-0 top-full mt-2 bg-white/95 backdrop-blur border border-slate-200 shadow-lg rounded-lg p-1 flex flex-col w-32 z-50" onMouseLeave={() => setShowDownloadMenu(false)}>
-                                    <button onClick={() => handleDownload('png')} className="px-3 py-2 text-xs text-left hover:bg-slate-50 text-slate-700 rounded-md block w-full transition-colors">Save PNG</button>
-                                    <button onClick={() => handleDownload('svg')} className="px-3 py-2 text-xs text-left hover:bg-slate-50 text-slate-700 rounded-md block w-full transition-colors">Save SVG</button>
+                                <div className="absolute right-0 bottom-full mb-2 bg-white/95 backdrop-blur border border-slate-200 shadow-lg rounded-xl p-1.5 flex flex-col w-32 z-50" onMouseLeave={() => setShowDownloadMenu(false)}>
+                                    <button onClick={() => handleDownload('png')} className="px-3 py-2.5 text-xs font-medium text-left hover:bg-slate-100 hover:text-blue-600 text-slate-700 rounded-md block w-full transition-colors">Save PNG</button>
+                                    <button onClick={() => handleDownload('svg')} className="px-3 py-2.5 text-xs font-medium text-left hover:bg-slate-100 hover:text-blue-600 text-slate-700 rounded-md block w-full transition-colors">Save SVG</button>
                                 </div>
                             )}
                         </div>
