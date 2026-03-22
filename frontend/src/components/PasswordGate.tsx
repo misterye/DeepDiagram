@@ -39,7 +39,7 @@ export const PasswordGate: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     return (
-        <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 relative overflow-hidden">
+        <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-slate-50 to-indigo-50 relative overflow-hidden">
             {/* Background decoration */}
             <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
@@ -51,14 +51,14 @@ export const PasswordGate: React.FC<{ children: React.ReactNode }> = ({ children
                 onSubmit={handleSubmit}
                 className={`relative z-10 w-full max-w-sm mx-4 ${shaking ? 'animate-shake' : ''}`}
             >
-                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+                <div className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-3xl p-8 shadow-2xl">
                     {/* Logo & Title */}
                     <div className="text-center mb-8">
                         <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/25">
                             <Lock className="w-8 h-8 text-white" />
                         </div>
-                        <h1 className="text-xl font-bold text-white mb-1">Diagram AI</h1>
-                        <p className="text-sm text-slate-400">请输入访问密码</p>
+                        <h1 className="text-xl font-bold text-slate-800 mb-1">Diagram AI</h1>
+                        <p className="text-sm text-slate-500">请输入访问密码</p>
                     </div>
 
                     {/* Password Input */}
@@ -69,12 +69,12 @@ export const PasswordGate: React.FC<{ children: React.ReactNode }> = ({ children
                             onChange={(e) => { setPassword(e.target.value); setError(''); }}
                             placeholder="输入密码..."
                             autoFocus
-                            className="w-full px-5 py-3.5 bg-white/10 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all text-sm pr-12"
+                            className="w-full px-5 py-3.5 bg-white border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all text-sm pr-12 shadow-sm"
                         />
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-500 hover:text-slate-300 transition-colors"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-slate-600 transition-colors"
                         >
                             {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
@@ -82,8 +82,8 @@ export const PasswordGate: React.FC<{ children: React.ReactNode }> = ({ children
 
                     {/* Error Message */}
                     {error && (
-                        <div className="mb-4 px-4 py-2.5 bg-red-500/10 border border-red-500/20 rounded-xl">
-                            <p className="text-red-400 text-xs font-medium text-center">{error}</p>
+                        <div className="mb-4 px-4 py-2.5 bg-red-50 border border-red-100 rounded-xl">
+                            <p className="text-red-500 text-xs font-medium text-center">{error}</p>
                         </div>
                     )}
 

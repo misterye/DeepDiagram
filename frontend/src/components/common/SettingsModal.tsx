@@ -77,10 +77,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
 
         if (editingId) {
             updateModel(editingId, trimmedForm);
-            setTestResult({ success: true, message: '配置更新成功�? });
+            setTestResult({ success: true, message: '配置更新成功！' });
         } else {
             addModel(trimmedForm);
-            setTestResult({ success: true, message: '模型添加成功�? });
+            setTestResult({ success: true, message: '模型添加成功！' });
         }
 
         // Show success message briefly, then reset form
@@ -106,16 +106,16 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
             onClick={onClose}
         >
             <div
-                className="bg-white w-full max-w-lg rounded-3xl shadow-2xl border border-slate-200 overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]"
+                className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/50">
                     <div className="flex items-center gap-2">
-                        <div className="p-2 bg-blue-100 text-blue-600 rounded-xl">
+                        <div className="p-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded-xl">
                             <Shield className="w-5 h-5" />
                         </div>
-                        <h2 className="text-lg font-bold text-slate-800">Model Configurations</h2>
+                        <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">Model Configurations</h2>
                     </div>
                     <button
                         onClick={onClose}
@@ -127,9 +127,9 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
 
                 {/* Body */}
                 <div className="p-6 overflow-y-auto custom-scrollbar flex-1 space-y-6">
-                    <div className="p-4 bg-blue-50 border border-blue-100 rounded-2xl flex gap-3">
+                    <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-2xl flex gap-3">
                         <Info className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
-                        <div className="text-xs text-blue-700 leading-relaxed">
+                        <div className="text-xs text-blue-700 dark:text-blue-300 leading-relaxed">
                             Configure multiple LLM providers. Your API keys are stored solely in your browser's local storage.
                         </div>
                     </div>
@@ -160,8 +160,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                                         className={cn(
                                             "group p-4 rounded-2xl border transition-all flex items-center justify-between",
                                             activeModelId === model.id
-                                                ? "bg-blue-50/50 border-blue-200 shadow-sm"
-                                                : "bg-white border-slate-100 hover:border-slate-200",
+                                                ? "bg-blue-50/50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 shadow-sm"
+                                                : "bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 hover:border-slate-200 dark:hover:border-slate-600",
                                             editingId === model.id && "ring-2 ring-blue-500 ring-offset-2"
                                         )}
                                     >
@@ -170,7 +170,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                                             onClick={() => setActiveModelId(model.id)}
                                         >
                                             <div className="flex items-center gap-2">
-                                                <span className="font-bold text-slate-700 text-sm">{model.name}</span>
+                                                <span className="font-bold text-slate-700 dark:text-slate-200 text-sm">{model.name}</span>
                                                 {activeModelId === model.id && (
                                                     <span className="flex items-center gap-1 px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded-md text-[9px] font-black uppercase">
                                                         Active
@@ -178,7 +178,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                                                 )}
                                             </div>
                                             <div className="text-[10px] text-slate-400 mt-0.5 font-mono truncate max-w-[200px]">
-                                                {model.modelId} �?{model.baseUrl}
+                                                {model.modelId} • {model.baseUrl}
                                             </div>
                                         </div>
 
@@ -217,7 +217,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                                     </button>
                                 </div>
 
-                                <div className="space-y-4 bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+                                <div className="space-y-4 bg-slate-50/50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700">
                                     <div>
                                         <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 ml-1">
                                             Configuration Name
@@ -225,7 +225,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                                         <input
                                             type="text"
                                             placeholder="e.g. My Claude 3.7"
-                                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-semibold"
+                                            className="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-xl text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-semibold"
                                             value={form.name}
                                             onChange={(e) => setForm({ ...form, name: e.target.value })}
                                         />
@@ -238,7 +238,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                                         <input
                                             type="text"
                                             placeholder="https://api.anthropic.com/v1"
-                                            className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                                            className="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-xl text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                                             value={form.baseUrl}
                                             onChange={(e) => { setForm({ ...form, baseUrl: e.target.value }); setTestResult(null); }}
                                         />
@@ -252,7 +252,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                                             <input
                                                 type="text"
                                                 placeholder="claude-3-7-sonnet..."
-                                                className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                                                className="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-xl text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
                                                 value={form.modelId}
                                                 onChange={(e) => { setForm({ ...form, modelId: e.target.value }); setTestResult(null); }}
                                             />
@@ -264,7 +264,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                                             <input
                                                 type="password"
                                                 placeholder="sk-..."
-                                                className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-mono"
+                                                className="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-600 rounded-xl text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-mono"
                                                 value={form.apiKey}
                                                 onChange={(e) => { setForm({ ...form, apiKey: e.target.value }); setTestResult(null); }}
                                             />
@@ -312,10 +312,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
+                <div className="px-6 py-4 bg-slate-50/50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Default Fallback:</span>
-                        <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">Server Config</span>
+                        <span className="text-[10px] font-bold text-slate-500 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">Server Config</span>
                     </div>
                     <button
                         onClick={onClose}
